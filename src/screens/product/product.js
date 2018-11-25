@@ -74,7 +74,12 @@ class Product extends Component {
     render() {
         const { product, title, onlyRead, valueInput } = this.state;
         const { loading, categories, doSave } = this.props;
-        const isEnabled = product.name.length > 0 && product.value > 0 && product.stockQuantity > 0 && product.category;
+        let isEnabled = product.name.length > 0 && product.value > 0;
+        if (product.id){
+            isEnabled = isEnabled && product.stockQuantity >= 0 && product.stockQuantity !== "" ;
+        } else {
+            isEnabled = isEnabled && product.stockQuantity > 0 && product.category.id !== undefined;
+        }
         return (
             <Container style={global.container}>
                 <Loader loading={loading} />
