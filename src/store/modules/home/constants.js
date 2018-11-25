@@ -1,0 +1,4 @@
+export const SET_PRODUCTS = 'HOME/SET_PRODUCTS';
+export const SET_QUANTITY = 'HOME/SET_QUANTITY';
+export const INCREMENT = 'HOME/INCREMENT';
+export const DECREMENT = 'HOME/DECREMENT';
