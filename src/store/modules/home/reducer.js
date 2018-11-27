@@ -13,7 +13,6 @@ const initialState: HomeState = {
 export default handleActions(
     {
         [SET_PRODUCTS]: (state = initialState, action) => {
-            console.log('setProducts', action.payload);
             return {
                 products: action.payload
             }

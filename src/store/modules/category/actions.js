@@ -5,6 +5,9 @@ import { showMessage } from '../../../utils/global';
 import * as categoryService from "../../../services/category.service";
 import Events from '../../../utils/events';
 
+/**
+* Buscar Todas Categorias
+*/
 export const findAll = () => {
     // Chamada assincrona
     return dispatch => {
@@ -28,6 +31,9 @@ export const findAll = () => {
     }
 }
 
+/**
+* Criar/Salvar Categoria
+*/
 export const save = (category) => {
     return dispatch => {
         // Mostrar pop-up carregando
@@ -48,6 +54,9 @@ export const save = (category) => {
     }
 }
 
+/**
+* Remover Categoria
+*/
 export const remove = (category) => {
     return dispatch => {
         // Mostrar pop-up carregando

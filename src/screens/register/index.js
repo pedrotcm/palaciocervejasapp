@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import global from "./../../theme/global";
 import { connect } from "react-redux";
+import { actions, States } from '../../store';
 import {
     TouchableHighlight
 } from 'react-native'
@@ -22,6 +23,7 @@ import {
     Picker
 } from "native-base";
 import Loader from "../../components/loader";
+import { TextInputMask, TextMask } from "react-native-masked-text";
 
 const stateArr = [
     "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE",
@@ -36,20 +38,35 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: undefined,
-            register: {
-                email: null,
-                password: null
+            passwordConfirmation: '',
+            name: '',
+            lastName: '',
+            client: {
+                email: '',
+                password: '',
+                cpf: '',
+                name: '',
+                phone: '',
+                address: '',
+                city: '',
+                state: ''
+
             }
         };
     }
     onValueChange(value) {
-        this.setState({
-            selected: value
-        });
+        this.setState({ client: { ...this.state.client, state: value } });
     }
+
+    saveClient() {
+        const fullName = this.state.name + ' ' + this.state.lastName;
+        this.props.doSave(this.state.client, fullName, this.state.passwordConfirmation);
+    }
+
     render() {
-        const { loading } = this.props;
+        const { loading, doSave } = this.props;
+        const { client, name, lastName, passwordConfirmation } = this.state;
+        const isEnabled = name.length > 0 && lastName.length > 0 && passwordConfirmation.length > 0 && client.email.length > 0 && client.password.length > 0 && client.phone.length > 0 && client.address.length > 0 && client.city.length > 0 && client.state.length > 0;
         return (
             <Container style={global.container}>
                 <Loader loading={loading} />
@@ -74,50 +91,76 @@ class Register extends Component {
                     <Form>
                         <Item rounded>
                             <Input placeholder='E-mail' keyboardType="email-address"
-                                onChangeText={(text) => this.setState({ register: { ...this.state.register, email: text } })}
+                                onChangeText={(text) => this.setState({ client: { ...client, email: text } })}
                             />
                         </Item>
                         <Item rounded>
                             <Input placeholder='Senha' secureTextEntry
-                                onChangeText={(text) => this.setState({ register: { ...this.state.register, password: text } })}
+                                onChangeText={(text) => this.setState({ client: { ...client, password: text } })}
                             />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='Confirmar Senha' secureTextEntry />
+                            <Input placeholder='Confirmar Senha' secureTextEntry
+                                onChangeText={(text) => this.setState({ passwordConfirmation: text })}
+                            />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='Nome' />
+                            <Input placeholder='Nome'
+                                onChangeText={(text) => this.setState({ name: text })}
+                            />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='Sobrenome' />
+                            <Input placeholder='Sobrenome'
+                                onChangeText={(text) => this.setState({ lastName: text })}
+                            />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='CPF' keyboardType="numeric" />
+                            <TextInputMask style={global.input_mask}
+                                placeholder='Telefone'
+                                type={'cel-phone'}
+                                value={client.phone}
+                                onChangeText={(text) => this.setState({ client: { ...client, phone: text } })}
+                            />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='Endereço' />
+                            <TextInputMask style={global.input_mask}
+                                placeholder='CPF'
+                                type={'cpf'}
+                                value={client.cpf}
+                                onChangeText={(text) => this.setState({ client: { ...client, cpf: text } })}
+                            />
                         </Item>
                         <Item rounded>
-                            <Input placeholder='Cidade' />
+                            <Input placeholder='Endereço'
+                                onChangeText={(text) => this.setState({ client: { ...client, address: text } })}
+                            />
+                        </Item>
+                        <Item rounded>
+                            <Input placeholder='Cidade'
+                                onChangeText={(text) => this.setState({ client: { ...client, city: text } })}
+                            />
                         </Item>
                         <Item picker rounded last>
                             <Picker
                                 mode="dropdown"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
-                                style={{ width: "100%" }}
+                                style={global.picker}
+                                placeholderStyle={global.picker_placeholder}
                                 placeholder="Estado"
                                 headerBackButtonText="Cancelar"
                                 iosHeader="Estado"
                                 placeholderStyle={{ color: "#bfc6ea" }}
                                 placeholderIconColor="#007aff"
-                                selectedValue={this.state.selected}
+                                selectedValue={client.state}
                                 onValueChange={this.onValueChange.bind(this)}
                             >
                                 {statePickerArr}
                             </Picker>
                         </Item>
                     </Form>
-                    <Button block onPress={() => this.props.dispatch(thunk_action_register(this.state.register))}>
+                    <Button block disabled={!isEnabled}
+                        onPress={() => this.saveClient()}
+                    >
                         <Text>Criar Conta</Text>
                     </Button>
                 </Content>
@@ -133,7 +176,8 @@ const mapStateToProps = (state: States) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-       
+        doSave: (client, fullName, passwordConfirmation) =>
+            dispatch(actions.auth.save(client, fullName, passwordConfirmation))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

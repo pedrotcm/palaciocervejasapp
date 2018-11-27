@@ -28,10 +28,11 @@ import thunk from 'redux-thunk';
 import { reducers } from './store/modules';
 
 
-const Drawer = createDrawerNavigator(
+const DrawerNavigator = createDrawerNavigator(
   {
     Home: { screen: Home },
     Login: { screen: Login },
+    Register: { screen: Register },
     Categories: { screen: Categories },
     Products: { screen: Products },
     Order: { screen: Order },
@@ -49,8 +50,7 @@ const Drawer = createDrawerNavigator(
 
 const AppNavigator = createStackNavigator(
   {
-    Drawer: { screen: Drawer },
-    Register: { screen: Register },
+    Drawer: { screen: DrawerNavigator },
     Category: { screen: Category },
     Product: { screen: Product }
   },
@@ -61,14 +61,17 @@ const AppNavigator = createStackNavigator(
 );
 
 const navReducer = createNavigationReducer(AppNavigator);
+const drawerReducer = createNavigationReducer(DrawerNavigator);
 const appReducers = combineReducers({
-  ...reducers, nav: navReducer
+  ...reducers, nav: navReducer, drawer: drawerReducer
 });
+
+
 
 // Note: createReactNavigationReduxMiddleware must be run before reduxifyNavigator
 const reduxMiddleware = createReactNavigationReduxMiddleware(
   "root",
-  state => state.nav,
+  state => { state.nav, state.drawer }
 );
 const middleware = [thunk, reduxMiddleware]
 

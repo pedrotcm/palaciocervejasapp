@@ -37,9 +37,13 @@ class Login extends Component {
         }
     }
 
+    componentWillMount() {
+        this.props.doClearError();
+    }
+
     render() {
         const { email, password } = this.state;
-        const { loading, doLogin } = this.props;
+        const { loading, doLogin, error } = this.props;
         const isEnabled = email.length > 0 && password.length > 0;
         return (
             <Container style={global.container}>
@@ -75,6 +79,7 @@ class Login extends Component {
                             />
                         </Item>
                     </Form>
+                    {error.length > 0 && <Text style={{ textAlign: "center", color: "red", marginBottom: 15 }}>{error}</Text>}
                     <Button block style={{ marginBottom: 10 }} disabled={!isEnabled}
                         onPress={() => {
                             doLogin(this.state.email, this.state.password)
@@ -98,13 +103,16 @@ class Login extends Component {
 
 const mapStateToProps = (state: States) => {
     return {
-        loading: state.app.loading
+        loading: state.app.loading,
+        error: state.auth.error
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
         doLogin: (email, password) =>
-            dispatch(actions.auth.login(email, password))
+            dispatch(actions.auth.login(email, password)),
+        doClearError: () =>
+            dispatch(actions.auth.clearError())
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

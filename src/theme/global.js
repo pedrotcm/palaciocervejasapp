@@ -22,10 +22,19 @@ export default StyleSheet.create({
         paddingTop: 2,
         paddingBottom: 2
     },
+    picker: {
+        fontSize: 17,
+        width: "100%",
+    },
+    picker_placeholder: {
+        fontSize: 17,
+        color: "#C7C7CD"
+    },
     input_mask: {
+        fontSize: 17,
         height: 50,
         color: "#000",
-        paddingLeft: 5,
+        paddingLeft: 7,
         paddingRight: 5,
         flex: 1,
         fontSize: 17

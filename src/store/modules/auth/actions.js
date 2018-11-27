@@ -1,44 +1,97 @@
-import * as types from './constants'
-import { actions } from '../'
+import * as types from './constants';
+import { actions } from '../';
+import { NavigationActions, DrawerActions } from 'react-navigation';
+import { showMessage, showMessageCenter } from '../../../utils/global';
+import * as authService from "../../../services/auth.service";
 
 /**
-* Sign in.
-* @param {string} email 
-* @param {string} password
+* Autenticar
 */
 export const login = (email: string, password: string) => {
-    // async call
     return dispatch => {
-        // turn loading animation on
-        // by dispacthing `loading` action from module `app`.
-        // yes, each action can interact with another module actions.
+        // Mostrar pop-up carregando
         dispatch(actions.app.loading())
-
-        // simulate ajax login
-        // in real world you can use `fetch` to make ajax request.
-        setTimeout(() => {
-            if (email === 'admin' && password === 'secret') {
+        // Autenticar Cliente
+        authService.login(email, password).then(res => {
+            showMessage('Autenticado com sucesso!', 'success');
+            dispatch({
+                type: types.LOGIN,
+                payload: res.data
+            })
+            dispatch(NavigationActions.navigate({ routeName: 'Home' }));
+        }).catch(err => {
+            if (err.response && err.response.status === 400) {
                 dispatch({
-                    type: types.LOGIN,
-                    payload: {
-                        userId: email,
-                        fullName: 'Clark Kent'
-                    }
+                    type: types.ERROR,
+                    payload: err.response.data
                 })
+            } else {
+                //TODO
+                console.log(err.response);
             }
-
-            // turn loading animation off
-            dispatch(actions.app.loading(false))
-        }, 3000)
+        }).finally(() => {
+            // Esconder pop-up carregando
+            dispatch(actions.app.loading(false));
+        });
     }
 }
 
 /**
-* Sign out.
+* Criar/Editar Conta
+*/
+export const save = (client, fullName, confirmPassword) => {
+    return dispatch => {
+        if (client.password !== confirmPassword) {
+            showMessageCenter('Confirmar senha não confere', 'danger');
+            return;
+        }
+        // Mostrar pop-up carregando
+        dispatch(actions.app.loading());
+        // Salvar cliente
+        client.name = fullName;
+        authService.save(client).then(res => {
+            const msg = client.id ? "editada" : "criada";
+            showMessage('Conta ' + msg + ' com sucesso!', 'success');
+            dispatch({
+                type: types.LOGIN,
+                payload: client
+            })
+            dispatch(NavigationActions.navigate({ routeName: 'Home' }));
+        }).catch(err => {
+            if (err.response && err.response.status === 400) {
+                showMessageCenter(err.response.data, 'danger');
+            } else {
+                //TODO
+                console.log(err.response);
+            }
+        }).finally(() => {
+            // Esconder pop-up carregando
+            dispatch(actions.app.loading(false));
+        });
+    }
+}
+
+/**
+* Desautenticar
 */
 export const logout = () => {
-    // direct/sync call
-    return {
-        type: types.LOGOUT
+    return dispatch => {
+        dispatch({
+            type: types.LOGOUT
+        })
+        dispatch(NavigationActions.navigate({ routeName: 'Home' }));
+        dispatch(DrawerActions.closeDrawer());
+    }
+}
+
+
+/**
+* Limpar Erros
+*/
+export const clearError = () => {
+    return dispatch => {
+        dispatch({
+            type: types.CLEAR_ERROR
+        })
     }
 }

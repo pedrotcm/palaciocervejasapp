@@ -10,5 +10,8 @@ export default {
   text: {
     fontWeight: Platform.OS === "ios" ? "500" : "400",
     fontSize: 16,
+  },
+  subitem: {
+    marginLeft: 15
   }
 };

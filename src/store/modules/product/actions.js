@@ -5,6 +5,9 @@ import { showMessage } from '../../../utils/global';
 import * as productService from "../../../services/product.service";
 import Events from '../../../utils/events';
 
+/**
+* Buscar Todos Produtos
+*/
 export const findAll = () => {
     // Chamada assincrona
     return dispatch => {
@@ -28,6 +31,9 @@ export const findAll = () => {
     }
 }
 
+/**
+* Criar/Editar Produto
+*/
 export const save = (entity) => {
     return dispatch => {
         // Mostrar pop-up carregando
@@ -48,6 +54,9 @@ export const save = (entity) => {
     }
 }
 
+/**
+* Remover Produto
+*/
 export const remove = (entity) => {
     return dispatch => {
         // Mostrar pop-up carregando

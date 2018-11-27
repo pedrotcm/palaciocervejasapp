@@ -1,35 +1,55 @@
 import { handleActions } from 'redux-actions'
-import { LOGIN, LOGOUT } from './constants'
+import { LOGIN, LOGOUT, ERROR, CLEAR_ERROR } from './constants'
 
 
 export type AuthState = {
     loggedIn: boolean,
-    userId: string,
-    fullName: string
-  }
+    isAdmin: boolean,
+    user: object,
+    error: string
+}
 
 const initialState: AuthState = {
     loggedIn: false,
-    userId: null,
-    fullName: null
+    isAdmin: false,
+    user: {},
+    error: ''
 }
 
 export default handleActions(
     {
         [LOGIN]: (state = initialState, action) => {
-            const p = action.payload
+            let isAdmin = false;
+            if (action.payload.email === 'admin@palacio'){
+                action.payload.name = "Administrador";
+                isAdmin = true;
+            }
             return {
                 loggedIn: true,
-                userId: p.userId,
-                fullName: p.fullName
+                isAdmin: isAdmin,
+                user: action.payload,
+                error: ''
+            }
+        },
+        [LOGOUT]: () => {
+            return {
+                loggedIn: false,
+                isAdmin: false,
+                user: {},
+                error: ''
+            }
+        },
+        [ERROR]: (state = initialState, action) => {
+            return {
+               ...state, error: action.payload
+            }
+        },
+        [CLEAR_ERROR]: (state = initialState, action) => {
+            return {
+               ...state, error: ''
             }
         },
 
-        [LOGOUT]: () => {
-            return {
-                loggedIn: false
-            }
-        }
     },
     initialState
 )

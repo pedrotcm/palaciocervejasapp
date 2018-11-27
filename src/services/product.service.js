@@ -7,12 +7,7 @@ export const getProducts = async () => {
 }
 
 export const save = async (entity) => {
-    //entity.category = API.defaults.baseURL + "categories/" + entity.category.id;
     return await API.post(endpoint, entity);
-    // if (entity.id){
-    //     return await API.patch(`${endpoint}/${entity.id}`, entity);
-    // } else {
-    // }
 }
 
 export const remove = async (entity) => {

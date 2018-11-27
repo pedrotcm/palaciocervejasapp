@@ -2,6 +2,9 @@ import * as types from './constants'
 import { actions } from '../'
 import * as productService from "../../../services/product.service";
 
+/**
+* Buscar Todos Produtos
+*/
 export const findAllProducts = () => {
     // Chamada assincrona
     return dispatch => {
@@ -25,6 +28,9 @@ export const findAllProducts = () => {
     }
 }
 
+/**
+* Setar Quantidade de Produtos
+*/
 export const setQuantity = (index, quantity) => {
     return {
         type: types.SET_QUANTITY,
@@ -32,6 +38,9 @@ export const setQuantity = (index, quantity) => {
     }
 }
 
+/**
+* Incrementar Quantidade de Itens do Produto
+*/
 export const increment = (index) => {
     return {
         type: types.INCREMENT,
@@ -39,6 +48,9 @@ export const increment = (index) => {
     }
 }
 
+/**
+* Decrementar Quantidade de Itens do Produto
+*/
 export const decrement = (index) => {
     return {
         type: types.DECREMENT,

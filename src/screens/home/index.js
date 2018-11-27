@@ -79,7 +79,6 @@ class Home extends Component {
     const { products, doIncrement, doDecrement, loading } = this.props;
     const { query } = this.state;
 
-    console.log(products);
     return (
       <Container style={global.container}>
         <StatusBar barStyle="dark-content" />
@@ -106,7 +105,7 @@ class Home extends Component {
           <View style={{ flexDirection: "row", height: 45, borderBottomWidth: 0.5, borderColor: "#c9c9c9" }}>
             <Item rounded style={{ flex: 3, backgroundColor: "#e3e3e3" }}>
               <Icon name="ios-search" />
-              <Input placeholder="Nome, estilo, volume..." style={{ fontSize: 14 }}></Input>
+              <Input placeholderTextColor="#575757" placeholder="Nome, estilo, volume..." style={{ fontSize: 14 }}></Input>
             </Item>
             <Button transparent style={{ flex: 1, paddingBottom: 15, height: 45 }}>
               <Text uppercase={false} style={{ color: "#000" }}> Buscar</Text>

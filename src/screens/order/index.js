@@ -29,7 +29,6 @@ import Loader from "../../components/loader";
 
 class Order extends Component {
     constructor(props) {
-        console.log('Category');
         super(props);
         this.state = {
             categories: []
