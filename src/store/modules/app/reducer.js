@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import { SET_LOADING, SHOW_MESSAGE } from './constants'
+import { SET_LOADING } from './constants'
 
 export type AppState = {
     loading: boolean

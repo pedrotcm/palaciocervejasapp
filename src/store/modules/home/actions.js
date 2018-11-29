@@ -1,5 +1,6 @@
-import * as types from './constants'
-import { actions } from '../'
+import * as types from './constants';
+import { actions } from '../';
+import { handleError } from '../../../utils/global';
 import * as productService from "../../../services/product.service";
 
 /**
@@ -14,17 +15,15 @@ export const findAllProducts = () => {
         // Carregar todos os produtos
         productService.getProducts().then(res => {
             products = res.data._embedded.products;
-        }).catch(err => {
-            console.log(err);
-            //TODO
-        }).finally(() => {
-            // Esconder pop-up carregando
-            dispatch(actions.app.loading(false));
-            dispatch({
-                type: types.SET_PRODUCTS,
-                payload: products
+        }).catch(handleError)
+            .finally(() => {
+                // Esconder pop-up carregando
+                dispatch(actions.app.loading(false));
+                dispatch({
+                    type: types.SET_PRODUCTS,
+                    payload: products
+                });
             });
-        });
     }
 }
 

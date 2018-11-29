@@ -42,18 +42,7 @@ const adminMenus = [
 const userMenus = [
   {
     name: "Minha Conta",
-    route: "MyAccount"
-  },
-  {
-    name: "Meus Pedidos",
-    route: "MyOrders"
-  }
-];
-
-const categoryMenus = [
-  {
-    name: "Minha Conta",
-    route: "MyAccount"
+    route: "Account"
   },
   {
     name: "Meus Pedidos",

@@ -1,5 +1,8 @@
 import axios from 'axios';
 
-export default axios.create({
-  baseURL: 'http://192.168.1.42:8080/api/'
-});
+var instance = axios.create();
+instance.defaults.baseURL = 'http://192.168.1.37:8080/api/';
+instance.defaults.timeout = 20000;
+
+
+export default instance;

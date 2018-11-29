@@ -69,7 +69,7 @@ class Login extends Component {
                     <Form>
                         <Text style={global.form_header}>Já sou cliente</Text>
                         <Item rounded>
-                            <Input placeholder='E-mail' keyboardType="email-address"
+                            <Input placeholder='E-mail' keyboardType="email-address" autoCapitalize="none"
                                 onChangeText={(text) => this.setState({ email: text })}
                             />
                         </Item>

@@ -3,7 +3,7 @@ import global from "./../../theme/global";
 import { connect } from "react-redux";
 import { actions, States } from '../../store';
 import {
-    TouchableHighlight
+    TouchableHighlight, Alert
 } from 'react-native'
 import {
     Container,
@@ -20,7 +20,8 @@ import {
     Item,
     Input,
     View,
-    Picker
+    Picker,
+    H3
 } from "native-base";
 import Loader from "../../components/loader";
 import { TextInputMask, TextMask } from "react-native-masked-text";
@@ -34,13 +35,11 @@ const statePickerArr = stateArr.map((state, i) => (
     <Picker.Item key={i} label={state} value={state} />
 ));
 
-class Register extends Component {
+class Account extends Component {
     constructor(props) {
         super(props);
         this.state = {
             passwordConfirmation: '',
-            name: '',
-            lastName: '',
             client: {
                 email: '',
                 password: '',
@@ -50,22 +49,41 @@ class Register extends Component {
                 address: '',
                 city: '',
                 state: ''
+
             }
         };
     }
+
+    componentDidMount() {
+        this.setState({ client: this.props.clientLoaded });
+        this.setState({passwordConfirmation: this.props.clientLoaded.password});
+    }
+
     onValueChange(value) {
         this.setState({ client: { ...this.state.client, state: value } });
     }
 
-    saveClient() {
-        const fullName = this.state.name + ' ' + this.state.lastName;
-        this.props.doRegister(this.state.client, fullName, this.state.passwordConfirmation);
+    updateClient() {
+        console.log(this.state.client, this.state.passwordConfirmation)
+        this.props.doUpdate(this.state.client, this.state.passwordConfirmation);
+    }
+
+    dialogRemove(){
+        Alert.alert(
+            this.state.client.name,
+            'Deseja realmente apagar sua conta?',
+            [
+                { text: 'Não', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'Sim', onPress: () => this.props.doRemove(this.state.client)}
+            ],
+            { cancelable: false }
+        )
     }
 
     render() {
-        const { loading, doSave } = this.props;
-        const { client, name, lastName, passwordConfirmation } = this.state;
-        const isEnabled = name.length > 0 && lastName.length > 0 && passwordConfirmation.length > 0 && client.email.length > 0 && client.password.length > 0 && client.phone.length > 0 && client.address.length > 0 && client.city.length > 0 && client.state.length > 0;
+        const { loading, doUpdate } = this.props;
+        let { passwordConfirmation, client } = this.state;
+        const isEnabled = client.name.length > 0 && passwordConfirmation.length > 0 && client.email.length > 0 && client.password.length > 0 && client.phone.length > 0 && client.address.length > 0 && client.city.length > 0 && client.state.length > 0;
         return (
             <Container style={global.container}>
                 <Loader loading={loading} />
@@ -87,30 +105,38 @@ class Register extends Component {
                 </Header>
 
                 <Content padder>
+                    <View style={{ flexDirection: "row" }}>
+                        <H3 style={{ alignSelf: "center", marginRight: "auto", paddingBottom: 5 }}>Minha Conta</H3>
+                        <Button
+                            transparent
+                            style={{ alignSelf: "center", marignLeft: "auto" }}
+                            onPress={() => this.dialogRemove()} dark>
+                            <Icon name="ios-trash" />
+                        </Button>
+                    </View>
                     <Form>
                         <Item rounded>
-                            <Input placeholder='E-mail' keyboardType="email-address" autoCapitalize="none"
+                            <Input placeholder='E-mail' keyboardType="email-address" disabled
+                                defaultValue={client.email}
                                 onChangeText={(text) => this.setState({ client: { ...client, email: text } })}
                             />
                         </Item>
                         <Item rounded>
                             <Input placeholder='Senha' secureTextEntry
+                                defaultValue={client.password}
                                 onChangeText={(text) => this.setState({ client: { ...client, password: text } })}
                             />
                         </Item>
                         <Item rounded>
                             <Input placeholder='Confirmar Senha' secureTextEntry
+                                defaultValue={client.password}
                                 onChangeText={(text) => this.setState({ passwordConfirmation: text })}
                             />
                         </Item>
                         <Item rounded>
                             <Input placeholder='Nome'
-                                onChangeText={(text) => this.setState({ name: text })}
-                            />
-                        </Item>
-                        <Item rounded>
-                            <Input placeholder='Sobrenome'
-                                onChangeText={(text) => this.setState({ lastName: text })}
+                                defaultValue={client.name}
+                                onChangeText={(text) => this.setState({ client: { ...client, name: text } })}
                             />
                         </Item>
                         <Item rounded>
@@ -131,11 +157,13 @@ class Register extends Component {
                         </Item>
                         <Item rounded>
                             <Input placeholder='Endereço'
+                                defaultValue={client.address}
                                 onChangeText={(text) => this.setState({ client: { ...client, address: text } })}
                             />
                         </Item>
                         <Item rounded>
                             <Input placeholder='Cidade'
+                                defaultValue={client.city}
                                 onChangeText={(text) => this.setState({ client: { ...client, city: text } })}
                             />
                         </Item>
@@ -158,9 +186,9 @@ class Register extends Component {
                         </Item>
                     </Form>
                     <Button block disabled={!isEnabled}
-                        onPress={() => this.saveClient()}
+                        onPress={() => this.updateClient()}
                     >
-                        <Text>Criar Conta</Text>
+                        <Text>Atualizar</Text>
                     </Button>
                 </Content>
             </Container >
@@ -170,13 +198,16 @@ class Register extends Component {
 
 const mapStateToProps = (state: States) => {
     return {
-        loading: state.app.loading
+        loading: state.app.loading,
+        clientLoaded: state.auth.user
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        doRegister: (client, fullName, passwordConfirmation) =>
-            dispatch(actions.client.register(client, fullName, passwordConfirmation))
+        doUpdate: (client, passwordConfirmation) =>
+            dispatch(actions.client.update(client, passwordConfirmation)),
+        doRemove: (client) =>
+            dispatch(actions.client.remove(client))
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

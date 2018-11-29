@@ -18,7 +18,8 @@ export const findAll = () => {
         productService.getProducts().then(res => {
             products = res.data._embedded.products;
         }).catch(err => {
-            console.log(err);
+            console.log('finalAllProducts');
+            console.log(err.response);
             //TODO
         }).finally(() => {
             // Esconder pop-up carregando
@@ -45,7 +46,7 @@ export const save = (entity) => {
             dispatch(NavigationActions.navigate({ routeName: 'Products' }));
             Events.publish('RefreshList');
         }).catch(err => {
-            console.log(err);
+            console.log(err.response);
             //TODO
         }).finally(() => {
             // Esconder pop-up carregando
@@ -67,7 +68,7 @@ export const remove = (entity) => {
             dispatch(NavigationActions.navigate({ routeName: 'Products' }));
             Events.publish('RefreshList');
         }).catch(err => {
-            console.log(err);
+            console.log(err.response);
             //TODO
         }).finally(() => {
             // Esconder pop-up carregando

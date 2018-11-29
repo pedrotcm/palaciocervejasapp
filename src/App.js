@@ -12,6 +12,8 @@ import Products from "./screens/product";
 import Product from "./screens/product/product";
 import Order from "./screens/order";
 import Report from "./screens/report";
+import Account from "./screens/account";
+
 
 import { Provider, connect } from 'react-redux';
 import {
@@ -32,6 +34,7 @@ const DrawerNavigator = createDrawerNavigator(
   {
     Home: { screen: Home },
     Login: { screen: Login },
+    Account: { screen: Account},
     Register: { screen: Register },
     Categories: { screen: Categories },
     Products: { screen: Products },
