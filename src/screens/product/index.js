@@ -62,7 +62,7 @@ class Products extends Component {
                             title,
                             'Deseja realmente remover esse produto?',
                             [
-                                { text: 'Não', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                                { text: 'Não', onPress: () => {}, style: 'cancel' },
                                 { text: 'Sim', onPress: () => this.props.doRemove(entity)},
                             ],
                             { cancelable: false }

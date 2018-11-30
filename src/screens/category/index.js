@@ -72,9 +72,9 @@ class Categories extends Component {
                     case consts.REMOVE_INDEX:
                         Alert.alert(
                             title,
-                            'Deseja realmente remover essa categoria?',
+                            'Deseja realmente remover essa categoria? Todos os produtos desta categoria serão removidos também.',
                             [
-                                { text: 'Não', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                                { text: 'Não', onPress: () => {} , style: 'cancel' },
                                 { text: 'Sim', onPress: () => this.props.doRemove(category)},
                             ],
                             { cancelable: false }

@@ -1,7 +1,7 @@
 import * as types from './constants';
 import { actions } from '../';
 import { NavigationActions, DrawerActions } from 'react-navigation';
-import { showMessage, showMessageCenter } from '../../../utils/global';
+import { showMessage, showMessageCenter, handleError} from '../../../utils/global';
 import * as authService from "../../../services/auth.service";
 import * as clientService from "../../../services/client.service";
 
@@ -27,8 +27,7 @@ export const login = (email: string, password: string) => {
                     payload: err.response.data
                 })
             } else {
-                //TODO
-                console.log(err.response);
+                handleError(err);
             }
         }).finally(() => {
             // Esconder pop-up carregando

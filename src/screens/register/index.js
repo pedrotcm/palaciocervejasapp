@@ -42,6 +42,7 @@ class Register extends Component {
             name: '',
             lastName: '',
             client: {
+                id: null,
                 email: '',
                 password: '',
                 cpf: '',

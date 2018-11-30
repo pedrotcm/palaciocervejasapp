@@ -41,6 +41,7 @@ class Account extends Component {
         this.state = {
             passwordConfirmation: '',
             client: {
+                id: null,
                 email: '',
                 password: '',
                 cpf: '',
@@ -49,7 +50,6 @@ class Account extends Component {
                 address: '',
                 city: '',
                 state: ''
-
             }
         };
     }
@@ -64,7 +64,6 @@ class Account extends Component {
     }
 
     updateClient() {
-        console.log(this.state.client, this.state.passwordConfirmation)
         this.props.doUpdate(this.state.client, this.state.passwordConfirmation);
     }
 
@@ -73,7 +72,7 @@ class Account extends Component {
             this.state.client.name,
             'Deseja realmente apagar sua conta?',
             [
-                { text: 'Não', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'Não', onPress: () => {}, style: 'cancel' },
                 { text: 'Sim', onPress: () => this.props.doRemove(this.state.client)}
             ],
             { cancelable: false }

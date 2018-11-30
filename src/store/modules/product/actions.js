@@ -1,7 +1,7 @@
 import * as types from './constants';
 import { actions } from '../';
 import { NavigationActions } from 'react-navigation';
-import { showMessage } from '../../../utils/global';
+import { showMessage, handleError } from '../../../utils/global';
 import * as productService from "../../../services/product.service";
 import Events from '../../../utils/events';
 
@@ -17,11 +17,7 @@ export const findAll = () => {
         // Carregar todos os produtos
         productService.getProducts().then(res => {
             products = res.data._embedded.products;
-        }).catch(err => {
-            console.log('finalAllProducts');
-            console.log(err.response);
-            //TODO
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
             dispatch({
@@ -45,10 +41,7 @@ export const save = (entity) => {
             showMessage('Produto ' + msg + ' com sucesso!', 'success');
             dispatch(NavigationActions.navigate({ routeName: 'Products' }));
             Events.publish('RefreshList');
-        }).catch(err => {
-            console.log(err.response);
-            //TODO
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });
@@ -67,10 +60,7 @@ export const remove = (entity) => {
             showMessage('Produto removido com sucesso!', 'success');
             dispatch(NavigationActions.navigate({ routeName: 'Products' }));
             Events.publish('RefreshList');
-        }).catch(err => {
-            console.log(err.response);
-            //TODO
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });

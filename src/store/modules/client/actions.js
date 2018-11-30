@@ -1,7 +1,7 @@
 import * as types from './constants';
 import { actions } from '../';
 import { NavigationActions, DrawerActions } from 'react-navigation';
-import { showMessage, showMessageCenter } from '../../../utils/global';
+import { showMessage, showMessageCenter, handleError } from '../../../utils/global';
 import * as clientService from "../../../services/client.service";
 
 /**
@@ -20,14 +20,14 @@ export const register = (client, fullName, confirmPassword) => {
         clientService.register(client).then(res => {
             const msg = client.id ? "editada" : "criada";
             showMessage('Conta ' + msg + ' com sucesso!', 'success');
-            dispatch(actions.auth.setUserLogged(client));
+            dispatch(actions.auth.setUserLogged(res.data));
             dispatch(NavigationActions.navigate({ routeName: 'Home' }));
         }).catch(err => {
             if (err.response && err.response.status === 400) {
                 showMessageCenter(err.response.data, 'danger');
             } else {
                 //TODO
-                console.log(err.response);
+                handleError(err);
             }
         }).finally(() => {
             // Esconder pop-up carregando
@@ -52,14 +52,7 @@ export const update = (client, confirmPassword) => {
             showMessage('Conta atualizada com sucesso!', 'success');
             dispatch(actions.auth.setUserLogged(client));
             dispatch(NavigationActions.navigate({ routeName: 'Home' }));
-        }).catch(err => {
-            if (err.response && err.response.status === 400) {
-                showMessageCenter(err.response.data, 'danger');
-            } else {
-                //TODO
-                console.log(err.response);
-            }
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });
@@ -78,10 +71,7 @@ export const remove = (client) => {
             showMessage('Conta removida com sucesso!', 'success');
             dispatch(actions.auth.logout());
             dispatch(NavigationActions.navigate({ routeName: 'Home' }));
-        }).catch(err => {
-            //todo
-            console.log(err.response);
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });

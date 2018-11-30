@@ -1,7 +1,7 @@
 import * as types from './constants';
 import { actions } from '../';
 import { NavigationActions } from 'react-navigation';
-import { showMessage } from '../../../utils/global';
+import { showMessage, handleError } from '../../../utils/global';
 import * as categoryService from "../../../services/category.service";
 import Events from '../../../utils/events';
 
@@ -17,17 +17,15 @@ export const findAll = () => {
         // Carregar todas as categorias
         categoryService.getCategories().then(res => {
             categories = res.data._embedded.categories;
-        }).catch(err => {
-            console.log(err);
-            //TODO
-        }).finally(() => {
-            // Esconder pop-up carregando
-            dispatch(actions.app.loading(false));
-            dispatch({
-                type: types.FIND_ALL,
-                payload: categories
+        }).catch(handleError)
+            .finally(() => {
+                // Esconder pop-up carregando
+                dispatch(actions.app.loading(false));
+                dispatch({
+                    type: types.FIND_ALL,
+                    payload: categories
+                });
             });
-        });
     }
 }
 
@@ -44,10 +42,7 @@ export const save = (category) => {
             showMessage('Categoria ' + msg + ' com sucesso!', 'success');
             dispatch(NavigationActions.navigate({ routeName: 'Categories' }));
             Events.publish('RefreshList');
-        }).catch(err => {
-            console.log(err);
-            //TODO
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });
@@ -66,10 +61,7 @@ export const remove = (category) => {
             showMessage('Categoria removida com sucesso!', 'success');
             dispatch(NavigationActions.navigate({ routeName: 'Categories' }));
             Events.publish('RefreshList');
-        }).catch(err => {
-            console.log(err);
-            //TODO
-        }).finally(() => {
+        }).catch(handleError).finally(() => {
             // Esconder pop-up carregando
             dispatch(actions.app.loading(false));
         });
