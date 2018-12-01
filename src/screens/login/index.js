@@ -41,6 +41,9 @@ class Login extends Component {
         this.props.doClearError();
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { email, password } = this.state;
         const { loading, doLogin, error } = this.props;

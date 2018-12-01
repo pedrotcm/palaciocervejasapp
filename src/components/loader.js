@@ -6,6 +6,9 @@ import {
     ActivityIndicator
 } from 'react-native';
 
+/*
+* Componente Diálogo Carregando
+*/
 const Loader = props => {
     const { loading, ...attributes } = props;
     return (

@@ -35,6 +35,9 @@ class Report extends Component {
         }
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { loading } = this.props
 

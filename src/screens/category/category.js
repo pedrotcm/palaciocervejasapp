@@ -50,6 +50,9 @@ class Category extends Component {
     }
 
 
+    /*
+    * Renderizar
+    */
     render() {
         const { category, title, onlyRead } = this.state;
         const { loading, doSave } = this.props

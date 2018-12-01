@@ -87,6 +87,9 @@ class Categories extends Component {
         )
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { loading, categories } = this.props;
         return (

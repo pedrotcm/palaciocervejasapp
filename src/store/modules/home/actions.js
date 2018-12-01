@@ -7,6 +7,7 @@ import * as productService from "../../../services/product.service";
 * Buscar Todos Produtos
 */
 export const findAllProducts = () => {
+    console.log('findAllProducts');
     // Chamada assincrona
     return dispatch => {
         // Mostrar pop-up carregando
@@ -15,8 +16,10 @@ export const findAllProducts = () => {
         // Carregar todos os produtos
         productService.getProducts().then(res => {
             products = res.data._embedded.products;
-        }).catch(handleError)
-            .finally(() => {
+        }).catch(err => {
+            console.log(err);
+            handleError(err);
+        })    .finally(() => {
                 // Esconder pop-up carregando
                 dispatch(actions.app.loading(false));
                 dispatch({

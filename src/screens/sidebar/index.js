@@ -63,6 +63,9 @@ class SideBar extends Component {
     this.props.doFindAllCategories();
   }
 
+  /*
+    * Renderizar
+    */
   render() {
     const { isAdmin, loggedIn, user, categories, doLogout } = this.props;
     return (
@@ -113,7 +116,7 @@ class SideBar extends Component {
           <List
             showsVerticalScrollIndicator={true}
             dataArray={categories}
-            style={{height: 200}}
+            style={{ maxHeight: 200 }}
             renderRow={data =>
               <ListItem
                 button
@@ -158,7 +161,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     doFindAllCategories: () =>
       dispatch(actions.category.findAll()),
-    doLogout: () => 
+    doLogout: () =>
       dispatch(actions.auth.logout())
   };
 };

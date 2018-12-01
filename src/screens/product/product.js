@@ -71,6 +71,9 @@ class Product extends Component {
         this.setState({ product: { ...this.state.product, value: Number(valueNumber) } });
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { product, title, onlyRead, valueInput } = this.state;
         const { loading, categories, doSave } = this.props;

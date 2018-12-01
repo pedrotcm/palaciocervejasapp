@@ -29,7 +29,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "br.com.palaciocervejas"
+    },
+    "android": {
+      "package": "br.com.palaciocervejas"
     }
   }
 }

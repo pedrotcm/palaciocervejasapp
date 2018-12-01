@@ -58,11 +58,17 @@ class Register extends Component {
         this.setState({ client: { ...this.state.client, state: value } });
     }
 
+    /*
+    * Criar Conta
+    */
     saveClient() {
         const fullName = this.state.name + ' ' + this.state.lastName;
         this.props.doRegister(this.state.client, fullName, this.state.passwordConfirmation);
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { loading, doSave } = this.props;
         const { client, name, lastName, passwordConfirmation } = this.state;

@@ -20,7 +20,7 @@ export default handleActions(
     {
         [LOGIN]: (state = initialState, action) => {
             let isAdmin = false;
-            if (action.payload.email === 'admin@palacio'){
+            if (action.payload.email === 'admin@palacio.com'){
                 action.payload.name = "Administrador";
                 isAdmin = true;
             }

@@ -63,10 +63,16 @@ class Account extends Component {
         this.setState({ client: { ...this.state.client, state: value } });
     }
 
+    /*
+    * Atualizar Dados Cliente
+    */
     updateClient() {
         this.props.doUpdate(this.state.client, this.state.passwordConfirmation);
     }
 
+    /*
+    * Diálogo Confirmação 
+    */
     dialogRemove(){
         Alert.alert(
             this.state.client.name,
@@ -79,6 +85,9 @@ class Account extends Component {
         )
     }
 
+    /*
+    * Renderizar
+    */
     render() {
         const { loading, doUpdate } = this.props;
         let { passwordConfirmation, client } = this.state;

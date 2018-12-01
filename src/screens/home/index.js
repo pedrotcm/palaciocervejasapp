@@ -52,29 +52,24 @@ class Home extends Component {
 
   componentDidMount() {
     this.init();
-    //this.refreshEvent = Events.subscribe('RefreshList', () => this.init());
   }
 
   init() {
     this.props.doFindAllProducts();
   }
 
-  componentWillUnmount() {
-    //this.refreshEvent.remove();
-  }
 
   handleClickCart() {
-    alert("I am cart");
-    // Call method from parent
-    //this.props.onPress();
+    alert("TODO Carrinho");
   }
-
-
 
   handleQuantityChange(index, value) {
     this.props.doSetQuantity(index, value);
   }
 
+  /*
+    * Renderizar
+  */
   render() {
     const { products, doIncrement, doDecrement, loading } = this.props;
     const { query } = this.state;

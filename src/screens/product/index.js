@@ -151,6 +151,13 @@ class Products extends Component {
                                     </ListItem>
                                 }>
                             </List>
+                            {products.length == 0 &&
+                                <List>
+                                    <ListItem noIndent style={{ flex: 1, justifyContent: "center", backgroundColor: "#FFF" }} >
+                                        <Text>Nenhum registro encontrado</Text>
+                                    </ListItem>
+                                </List>
+                            }
                         </View>
                     </Form>
                 </Content>

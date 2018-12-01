@@ -29,6 +29,7 @@ const showMessageCenter = (message: string, type: string) => {
 
 const handleError = (error) => {
     //Quasar Toast Schema
+    console.log('Handling error...',error);
     let message = {
         text: 'Network Error.',
         buttonText: "",

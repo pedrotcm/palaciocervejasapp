@@ -1,6 +1,6 @@
 import { reducers, actions } from './modules';
 
 /**
- * Root states types and actions.
+ * Tipos de estados e ações
  */
 export { States, actions } from './modules';
