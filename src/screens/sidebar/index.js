@@ -63,11 +63,16 @@ class SideBar extends Component {
     this.props.doFindAllCategories();
   }
 
+  handleClickCategory(category){
+    this.props.doFindByCategory(category);
+    this.props.navigation.closeDrawer();
+  }
+
   /*
     * Renderizar
     */
   render() {
-    const { isAdmin, loggedIn, user, categories, doLogout } = this.props;
+    const { isAdmin, loggedIn, user, categories, doLogout, doFindByCategory } = this.props;
     return (
       <Container style={styles.container}>
         <Content
@@ -122,7 +127,7 @@ class SideBar extends Component {
                 button
                 noIndent
                 style={styles.subitem}
-                onPress={() => console.log(data)}>
+                onPress={() => this.handleClickCategory(data.name)}>
                 <Left>
                   <Text style={styles.text}>
                     {data.name}
@@ -162,7 +167,9 @@ const mapDispatchToProps = (dispatch) => {
     doFindAllCategories: () =>
       dispatch(actions.category.findAll()),
     doLogout: () =>
-      dispatch(actions.auth.logout())
+      dispatch(actions.auth.logout()),
+    doFindByCategory: (query) =>
+      dispatch(actions.home.findByQuery(query))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

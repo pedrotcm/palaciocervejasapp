@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StatusBar } from "react-native";
+import { TouchableHighlight, StatusBar } from "react-native";
 import { connect } from "react-redux";
 import { actions, States } from "../../store";
 import {
@@ -27,25 +27,11 @@ import { TextMask } from "react-native-masked-text";
 
 var image = require('./../../../assets/icon.png');
 
-productArr = [
-  {
-    id: 1,
-    name: "Cerveja Heineken 600ml",
-    value: 8.00,
-    qnt: 1,
-  },
-  {
-    id: 2,
-    name: "Cerveja Budweiser 600ml",
-    value: 5.30,
-    qnt: 1
-  },
-];
-
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isFiltered: false,
       query: ""
     }
   }
@@ -58,7 +44,6 @@ class Home extends Component {
     this.props.doFindAllProducts();
   }
 
-
   handleClickCart() {
     alert("TODO Carrinho");
   }
@@ -67,8 +52,19 @@ class Home extends Component {
     this.props.doSetQuantity(index, value);
   }
 
+  handleTitleClick() {
+    if (this.props.isFiltered) {
+      this.props.doFindAllProducts();
+      this.setState({ query: "" })
+    }
+  }
+
+  handleFilterButton() {
+    this.props.doFindByQuery(this.state.query);
+  }
+
   /*
-    * Renderizar
+  * Renderizar
   */
   render() {
     const { products, doIncrement, doDecrement, loading } = this.props;
@@ -87,7 +83,11 @@ class Home extends Component {
             </Button>
           </Left>
           <Body style={{ flex: 3, alignItems: "center" }}>
-            <Title>Palácio das Cervejas</Title>
+            <TouchableHighlight
+              onPress={() => this.handleTitleClick()}
+            >
+              <Title>Palácio das Cervejas</Title>
+            </TouchableHighlight>
           </Body>
           <Right style={{ flex: 1 }} >
             <Button transparent onPress={this.handleClickCart} dark>
@@ -100,9 +100,13 @@ class Home extends Component {
           <View style={{ flexDirection: "row", height: 45, borderBottomWidth: 0.5, borderColor: "#c9c9c9" }}>
             <Item rounded style={{ flex: 3, backgroundColor: "#e3e3e3" }}>
               <Icon name="ios-search" />
-              <Input placeholderTextColor="#575757" placeholder="Nome, estilo, volume..." style={{ fontSize: 14 }}></Input>
+              <Input value={query} placeholderTextColor="#575757" placeholder="Nome, estilo, volume..." style={{ fontSize: 14 }}
+                onChangeText={(text) => this.setState({ query: text })}
+              />
             </Item>
-            <Button transparent style={{ flex: 1, paddingBottom: 15, height: 45 }}>
+            <Button transparent style={{ flex: 1, paddingBottom: 15, height: 45 }}
+              onPress={() => this.handleFilterButton()}
+            >
               <Text uppercase={false} style={{ color: "#000" }}> Buscar</Text>
             </Button>
           </View>
@@ -152,7 +156,8 @@ class Home extends Component {
 const mapStateToProps = (state: States) => {
   return {
     loading: state.app.loading,
-    products: state.home.products
+    products: state.home.products,
+    isFiltered: state.home.isFiltered
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -164,8 +169,9 @@ const mapDispatchToProps = (dispatch) => {
     doDecrement: (index) =>
       dispatch(actions.home.decrement(index)),
     doSetQuantity: (index, quantity) =>
-      dispatch(actions.home.setQuantity(index, quantity))
-
+      dispatch(actions.home.setQuantity(index, quantity)),
+    doFindByQuery: (query) =>
+      dispatch(actions.home.findByQuery(query))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

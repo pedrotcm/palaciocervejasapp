@@ -3,18 +3,21 @@ import { INCREMENT, DECREMENT, SET_PRODUCTS, SET_QUANTITY } from './constants'
 
 
 export type HomeState = {
-    products: Object
+    products: Object,
+    isFiltered: boolean
 }
 
 const initialState: HomeState = {
-    products: []
+    products: [],
+    isFiltered: false
 }
 
 export default handleActions(
     {
         [SET_PRODUCTS]: (state = initialState, action) => {
             return {
-                products: action.payload
+                products: action.payload.products,
+                isFiltered: action.payload.isFiltered
             }
         },
 

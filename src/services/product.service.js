@@ -22,3 +22,11 @@ export const save = async (entity) => {
 export const remove = async (entity) => {
     return await API.delete(`${endpoint}/${entity.id}`, entity);
 }
+
+
+/*
+* Buscar por nome ou colume
+*/
+export const findByQuery = async (query) => {
+    return await API.get(`${endpoint}/search/findByFilter?query=${query}`);
+}

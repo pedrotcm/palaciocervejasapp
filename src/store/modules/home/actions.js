@@ -7,7 +7,6 @@ import * as productService from "../../../services/product.service";
 * Buscar Todos Produtos
 */
 export const findAllProducts = () => {
-    console.log('findAllProducts');
     // Chamada assincrona
     return dispatch => {
         // Mostrar pop-up carregando
@@ -22,11 +21,40 @@ export const findAllProducts = () => {
         })    .finally(() => {
                 // Esconder pop-up carregando
                 dispatch(actions.app.loading(false));
-                dispatch({
-                    type: types.SET_PRODUCTS,
-                    payload: products
-                });
+                // Setar produtos
+                dispatch(setProducts(products, false));
             });
+    }
+}
+
+/**
+* Buscar por query
+*/
+export const findByQuery = (query) => {
+    // Chamada assincrona
+    return dispatch => {
+        // Mostrar pop-up carregando
+        dispatch(actions.app.loading());
+        let products = [];
+        // Carregar todos os produtos
+        productService.findByQuery(query).then(res => {
+            products = res.data._embedded.products;
+        }).catch(handleError).finally(() => {
+            // Esconder pop-up carregando
+            dispatch(actions.app.loading(false));
+            // Setar produtos
+            dispatch(setProducts(products,true));
+        });
+    }
+}
+
+/**
+* Setar Produtos
+*/
+export const setProducts = (products, isFiltered) => {
+    return {
+        type: types.SET_PRODUCTS,
+        payload: { products: products, isFiltered : isFiltered }
     }
 }
 
