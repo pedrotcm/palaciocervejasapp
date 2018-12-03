@@ -25,7 +25,7 @@ import styles from "./styles";
 import global from "./../../theme/global";
 import { TextMask } from "react-native-masked-text";
 
-var image = require('./../../../assets/icon.png');
+var image = require('./../../../assets/product_img.png');
 
 class Home extends Component {
   constructor(props) {
